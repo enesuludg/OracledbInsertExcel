@@ -1,4 +1,4 @@
-//import oracledb from 'oracledb';
+import oracledb from 'oracledb';
 import { user, password, connectionString } from './dbconfig.js';
 import  path from 'path';
 import csvtojsonV2 from 'csvtojson';
@@ -8,13 +8,14 @@ const filePath=process.argv[3];
 const fileExt = path.extname(filePath);
 let connection;
 let data;
-import xlsxParser from 'xlsx-parse-json';
 
 if(fileExt ==='.xlsx'){
     //data = xlsx(filePath);
-    convertExcelFileToJsonUsingXlsx(filePath)
+    data = convertExcelFileToJsonUsingXlsx(filePath);
+    insert(table,data);
 } else if(fileExt ==='.csv'){
     data = csv(filePath);
+    insert(table,data);
 }
 else{
     console.log('File format not supported');
@@ -60,11 +61,6 @@ sheet_name_list.forEach(function(y) {
     data.shift();
     data.shift();
     console.log(data);
-    /* Object.keys(data).forEach(function(key){
-        if (data[key] === 'undefined') {
-          delete data[key];
-        }
-      }); */
     return data;
 });
 }
