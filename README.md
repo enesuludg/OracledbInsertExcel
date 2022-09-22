@@ -1,1 +1,2 @@
 # OracledbInsertExcel
+npm i oracledb
