@@ -68,12 +68,20 @@ async function insert(table,values){
     try {
     connection = await oracledb.getConnection({ user, password, connectionString });
     console.log("Successfully connected to Oracle Database");
+    if(table ==='FIND_ENTITY'){
+        for(const value of values) { 
+            const query='insert into FIND_ENTITY (CARIKOD,CARIAD,VKN,ULKE,IL,ILCE,ADRES) values (:1,:2,:3,:4,:5,:6,:7)';
+            const binds=[value.CARIKOD,value.CARIAD,value.VKN,value.ULKE,value.IL,value.ILCE,value.ADRES];
+            await connection.execute(query , binds, {autoCommit:true});
+        }
+    }else{
     for(const value of values) { 
         await connection.execute(
             `INSERT INTO ${table} (po_document) VALUES (:bv)`,
             { bv: {val: value, type: oracledb.DB_TYPE_JSON} }
         );
     }
+}
     if (connection) {
         try {
           await connection.close();
