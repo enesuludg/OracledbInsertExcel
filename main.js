@@ -68,13 +68,21 @@ async function insert(table,values){
     try {
     connection = await oracledb.getConnection({ user, password, connectionString });
     console.log("Successfully connected to Oracle Database");
-    if(table ==='FIND_ENTITY'){
-        for(const value of values) { 
-            const query='insert into FIND_ENTITY (CARIKOD,CARIAD,VKN,ULKE,IL,ILCE,ADRES) values (:1,:2,:3,:4,:5,:6,:7)';
-            const binds=[value.CARIKOD,value.CARIAD,value.VKN,value.ULKE,value.IL,value.ILCE,value.ADRES];
-            await connection.execute(query , binds, {autoCommit:true});
+    if (table === 'FIND_ENTITY') {
+        for (const value of values) {
+            // const query = 'insert into FIND_ENTITY (ENTITY_CODE,ENTITY_NAME,TAX_NO,COUNTRY_ID,CITY_ID,TOWN_ID,ADDRESS1) values (:1,:2,:3,:4,:5,:6,:7)';
+            // const binds = [value.ENTITY_CODE, value.ENTITY_NAME, value.TAX_NO, value.COUNTRY_ID, value.CITY_ID, value.TOWN_ID, value.ADDRESS1];
+            const sql = `INSERT INTO FIND_ENTITY VALUES (:ENTITY_CODE, :ENTITY_NAME, :TAX_NO, :COUNTRY_ID, :CITY_ID, :TOWN_ID, :ADDRESS1)`;
+            const result = await connection.execute(
+                sql,
+                value,
+                { autoCommit: true }
+                );
+                console.log("GIDEN DATA",result);
         }
-    }else{
+
+        console.log("DDD", values);
+    } else{
     for(const value of values) { 
         await connection.execute(
             `INSERT INTO ${table} (po_document) VALUES (:bv)`,
