@@ -1,4 +1,4 @@
-import oracledb from 'oracledb';
+//import oracledb from 'oracledb';
 import { user, password, connectionString } from './dbconfig.js';
 import  path from 'path';
 import csvtojsonV2 from 'csvtojson';
@@ -11,7 +11,7 @@ let data;
 
 if(fileExt ==='.xlsx'){
     //data = xlsx(filePath);
-    data = convertExcelFileToJsonUsingXlsx(filePath);
+    data = xlsx(filePath);
     insert(table,data);
 } else if(fileExt ==='.csv'){
     data = csv(filePath);
